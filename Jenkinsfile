@@ -4,10 +4,11 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Haal de broncode op van GitHub
-                git url: 'https://github.com/Wepsel/html3.git'
+                // Haal de broncode op van een specifieke branch
+                git url: 'https://github.com/Wepsel/html3.git', branch: 'main'
             }
         }
+
         
         stage('Deploy to Test Server') {
             steps {
