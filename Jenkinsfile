@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Haal de broncode op van GitHub
-                git url: 'https://github.com/Wepsel/html.git'
+                git url: 'https://github.com/Wepsel/html3.git'
             }
         }
         
