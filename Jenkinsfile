@@ -4,33 +4,33 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Haal de broncode op van GitHub
-                bat 'git clone https://github.com/Wepsel/html3.git'
+                // Haal de code op vanuit Git zonder specifieke credentials
                 git url: 'https://github.com/Wepsel/html3.git'
             }
         }
-
+        
         stage('Deploy to Test Server') {
+            when {
+                // Voer dit stadium alleen uit voor bepaalde branches (bijv. develop)
+                expression { currentBuild.rawBuild.getEnvironment(listener).get('BRANCH_NAME') == 'main' }
+            }
             steps {
-                // Geef het absolute pad naar de HTML-bestanden op
-                def sourceDir = bat(script: 'echo %WORKSPACE%\\html', returnStdout: true).trim()
-                def targetDir = 'student@10.0.0.26:\\var\\www\\html\\'
-
-                // Kopieer de HTML-bestanden naar de testserver
-                bat 'xcopy /E /I html\\* student@10.0.0.26:\\var\\www\\html\\'
-                bat "xcopy /E /I ${sourceDir}\\* ${targetDir}"
+                // Kopieer HTML-bestanden naar de testserver via SSH
+                bat 'echo Copying HTML files to test server'
+                publishOverSSH(configName: 'test', transfers: [transfer(sourceFiles: '*.html', remoteDirectory: '/var/www/html')])
             }
         }
-
+        
         stage('Deploy to Production Server') {
+            when {
+                // Voer dit stadium alleen uit voor bepaalde branches (bijv. master)
+                expression { currentBuild.rawBuild.getEnvironment(listener).get('BRANCH_NAME') == 'master' }
+            }
             steps {
-                // Geef het absolute pad naar de HTML-bestanden op
-                def sourceDir = bat(script: 'echo %WORKSPACE%\\html', returnStdout: true).trim()
-                def targetDir = 'user@productionserver:\\path\\to\\deploy\\'
-
-                // Kopieer de HTML-bestanden naar de productieserver
-                bat 'xcopy /E /I html\\* user@productionserver:\\path\\to\\deploy\\'
-                bat "xcopy /E /I ${sourceDir}\\* ${targetDir}"
+                // Kopieer HTML-bestanden naar de productieserver via SSH
+                bat 'echo Copying HTML files to production server'
+                publishOverSSH(configName: 'prod-server-ssh-config', transfers: [transfer(sourceFiles: '*.html', remoteDirectory: '/path/on/prod/server')])
             }
         }
     }
+}
