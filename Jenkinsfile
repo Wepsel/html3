@@ -15,7 +15,7 @@ pipeline {
             steps {
                 echo 'Copying HTML files to the test server'
                 // SSH-copy HTML-bestanden naar de testserver met wachtwoord
-                bat 'echo y | plink -pw student student@10.0.0.26 "cd /var/www/html && put *.html"'
+                bat 'echo y | pscp -pw student C:\ProgramData\Jenkins\.jenkins\workspace\Multibranch_main\*.html student@10.0.0.26:/var/www/html/'
             }
         }
         
