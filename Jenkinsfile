@@ -1,18 +1,11 @@
 pipeline {
     agent any
     
-    options {
-        skipDefaultCheckout(true)  // Sla de standaard checkout over
-    }
-    
     stages {
-        stage('Set Workspace Path') {
+        stage('Checkout') {
             steps {
-                // Handmatig het pad naar de workspace instellen
-                dir("C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Multibranch_main") {
-                    // Haal de broncode op van GitHub
-                    git url: 'https://github.com/Wepsel/html3.git'
-                }
+                // Haal de broncode op van GitHub
+                git url: 'https://github.com/Wepsel/html3.git'
             }
         }
         
