@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/Wepsel/html3.git'
+                git branch: 'master', url: 'https://github.com/Wepsel/html3.git'
             }
         }
         
@@ -20,7 +20,7 @@ pipeline {
 
         stage('Deploy to Production Server') {
             when {
-                expression { currentBuild.rawBuild.getEnvironment().get('BRANCH_NAME') == 'main' }
+                expression { currentBuild.rawBuild.getEnvironment().get('BRANCH_NAME') == 'master' }
             }
             steps {
                 echo 'Copying HTML files to the production server'
