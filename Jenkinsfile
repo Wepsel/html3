@@ -4,23 +4,22 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Haal de broncode op van een specifieke branch
-                git url: 'https://github.com/Wepsel/html3.git', branch: 'main'
+                // Haal de broncode op van GitHub
+                bat 'git clone https://github.com/Wepsel/html3.git'
             }
         }
-
         
         stage('Deploy to Test Server') {
             steps {
                 // Kopieer de HTML-bestanden naar de testserver
-                sh 'rsync -avz ./html/* student@10.0.0.26:/var/www/html/'
+                bat 'xcopy /E /I html\\* student@10.0.0.26:\\var\\www\\html\\'
             }
         }
         
         stage('Deploy to Production Server') {
             steps {
                 // Kopieer de HTML-bestanden naar de productieserver
-                sh 'rsync -avz ./html/* user@productionserver:/path/to/deploy/'
+                bat 'xcopy /E /I html\\* user@productionserver:\\path\\to\\deploy\\'
             }
         }
     }
