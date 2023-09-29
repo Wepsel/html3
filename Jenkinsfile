@@ -24,7 +24,7 @@ pipeline {
         stage('Deploy to Production Server') {
             when {
                 // Voer dit stadium alleen uit voor bepaalde branches (bijv. master)
-                expression { currentBuild.rawBuild.getEnvironment(listener).get('BRANCH_NAME') == 'master' }
+                expression { currentBuild.rawBuild.getEnvironment(listener).get('BRANCH_NAME') == 'main' }
             }
             steps {
                 // Kopieer HTML-bestanden naar de productieserver via SSH
