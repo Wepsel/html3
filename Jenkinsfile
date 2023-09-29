@@ -12,7 +12,7 @@ pipeline {
         stage('Deploy to Test Server') {
             steps {
                 // Kopieer de HTML-bestanden naar de testserver
-                sh 'rsync -avz ./html/* student@10.0.0.26:/pvar/www/html/'
+                sh 'rsync -avz ./html/* student@10.0.0.26:/var/www/html/'
             }
         }
         
