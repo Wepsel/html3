@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Haal de code op vanuit Git zonder specifieke credentials
-                git url: 'https://github.com/Wepsel/html3.git'
+                git branch: 'main', url: 'https://github.com/Wepsel/html3.git'
             }
         }
         
