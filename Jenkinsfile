@@ -20,7 +20,7 @@ pipeline {
 
         stage('Deploy to Production Server') {
             when {
-                expression { currentBuild.rawBuild.getEnvironment().get('BRANCH_NAME') == 'main' }
+                expression { currentBuild.rawBuild.getEnvironment().get('BRANCH_NAME') == 'master' }
             }
             steps {
                 echo 'Copying HTML files to the production server'
