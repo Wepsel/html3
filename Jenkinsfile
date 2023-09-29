@@ -15,7 +15,7 @@ pipeline {
             steps {
                 echo 'Copying HTML files to the test server'
                 // SSH-copy HTML-bestanden naar de testserver met wachtwoord
-                bat 'sshpass -p "student" scp -r *.html student@10.0.0.26:/var/www/html/'
+                bat 'echo y | plink -pw student student@10.0.0.26 "cd /var/www/html && put *.html"'
             }
         }
         
@@ -26,7 +26,7 @@ pipeline {
             steps {
                 echo 'Copying HTML files to the production server'
                 // SSH-copy HTML-bestanden naar de productieserver met wachtwoord
-                bat 'sshpass -p "your_ssh_password" scp -r *.html user@prod_server_ip:/path/on/prod/server/'
+                bat 'echo y | plink -pw your_ssh_password user@prod_server_ip "cd /path/on/prod/server && put *.html"'
             }
         }
     }
