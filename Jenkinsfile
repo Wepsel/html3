@@ -4,32 +4,29 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Haal de code op vanuit Git zonder specifieke credentials
                 git branch: 'main', url: 'https://github.com/Wepsel/html3.git'
             }
         }
         
         stage('Deploy to Test Server') {
             when {
-                // Voer dit stadium alleen uit voor bepaalde branches (bijv. develop)
                 expression { currentBuild.rawBuild.getEnvironment(listener).get('BRANCH_NAME') == 'main' }
             }
             steps {
-                // Kopieer HTML-bestanden naar de testserver via SSH
-                bat 'echo Copying HTML files to test server'
-                publishOverSSH(configName: 'Test', transfers: [transfer(sourceFiles: '**/**', remoteDirectory: '/var/www/html')])
+                echo 'Copying HTML files to the test server'
+                // SSH-copy HTML-bestanden naar de testserver met wachtwoord
+                bat 'sshpass -p "student" scp -r *.html student@10.0.0.26:/var/www/html/'
             }
         }
         
         stage('Deploy to Production Server') {
             when {
-                // Voer dit stadium alleen uit voor bepaalde branches (bijv. master)
                 expression { currentBuild.rawBuild.getEnvironment(listener).get('BRANCH_NAME') == 'main' }
             }
             steps {
-                // Kopieer HTML-bestanden naar de productieserver via SSH
-                bat 'echo Copying HTML files to production server'
-                publishOverSSH(configName: 'prod-server-ssh-config', transfers: [transfer(sourceFiles: '*.html', remoteDirectory: '/path/on/prod/server')])
+                echo 'Copying HTML files to the production server'
+                // SSH-copy HTML-bestanden naar de productieserver met wachtwoord
+                bat 'sshpass -p "your_ssh_password" scp -r *.html user@prod_server_ip:/path/on/prod/server/'
             }
         }
     }
