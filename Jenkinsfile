@@ -17,7 +17,7 @@ pipeline {
             steps {
                 // Kopieer HTML-bestanden naar de testserver via SSH
                 bat 'echo Copying HTML files to test server'
-                publishOverSSH(configName: 'test', transfers: [transfer(sourceFiles: '**/**', remoteDirectory: '/var/www/html')])
+                publishOverSSH(configName: 'Test', transfers: [transfer(sourceFiles: '**/**', remoteDirectory: '/var/www/html')])
             }
         }
         
