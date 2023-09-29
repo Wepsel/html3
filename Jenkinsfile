@@ -26,7 +26,7 @@ pipeline {
             steps {
                 echo 'Copying HTML files to the production server'
                 // SSH-copy HTML-bestanden naar de productieserver met wachtwoord
-                bat 'echo y | plink -pw your_ssh_password user@prod_server_ip "cd /path/on/prod/server && put *.html"'
+                bat 'echo y | pscp -pw your_ssh_password *.html user@prod_server_ip:/path/on/prod/server/'
             }
         }
     }
