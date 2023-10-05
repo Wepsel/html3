@@ -4,22 +4,20 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Haal de broncode op van GitHub
-                bat 'git clone https://github.com/Wepsel/html3.git'
+                git branch: 'main', url: 'https://github.com/Wepsel/html3.git'
             }
         }
-        
-        stage('Deploy to Test Server') {
-            steps {
-                // Kopieer de HTML-bestanden naar de testserver
-                bat 'xcopy /E /I html\\* student@10.0.0.26:\\var\\www\\html\\'
-            }
-        }
-        
+
         stage('Deploy to Production Server') {
+            when {
+                expression { currentBuild.rawBuild.getEnvironment().get('BRANCH_NAME') == 'main' }
+            }
             steps {
-                // Kopieer de HTML-bestanden naar de productieserver
-                bat 'xcopy /E /I html\\* user@productionserver:\\path\\to\\deploy\\'
+                script {
+                    input "Do you want to proceed with the deployment to the production server?"
+                    echo 'Copying HTML files to the production server'
+                    bat 'echo y | pscp -pw student C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Multibranch_main\\*.html student@10.0.0.27:/var/www/html/'
+                }
             }
         }
     }
