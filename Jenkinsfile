@@ -4,13 +4,13 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/Wepsel/html3.git'
+                git branch: 'main', url: 'https://github.com/Wepsel/html3.git'
             }
         }
 
         stage('Deploy to Production Server') {
             when {
-                expression { currentBuild.rawBuild.getEnvironment().get('BRANCH_NAME') == 'master' }
+                expression { currentBuild.rawBuild.getEnvironment().get('BRANCH_NAME') == 'main' }
             }
             steps {
                 script {
